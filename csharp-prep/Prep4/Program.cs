@@ -4,42 +4,47 @@ using System.Linq;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
         List<int> numbers = new List<int>();
-        
-        // Prompt user to enter numbers until 0 is entered
-        while (true)
+
+        Console.WriteLine("Enter a list of numbers, type 0 when finished.");
+
+        int userNumber = -1;
+        while (userNumber != 0)
         {
             Console.Write("Enter number: ");
-            int num = int.Parse(Console.ReadLine());
-            if (num == 0)
-                break;
-            numbers.Add(num);
+            string userResponse = Console.ReadLine();
+            userNumber = int.Parse(userResponse);
+            numbers.Add(userNumber);
         }
-        
-        // Calculate sum
-        int sum = numbers.Sum();
-        Console.WriteLine("The sum is: " + sum);
-        
-        // Calculate average
-        double average = numbers.Average();
-        Console.WriteLine("The average is: " + average);
-        
-        // Find maximum number
+
+        numbers.RemoveAt(numbers.Count - 1); // Removing the last '0' entry
+
+        int sum = 0;
+        foreach (int number in numbers)
+        {
+            sum += number;
+        }
+
+        Console.WriteLine($"The sum is: {sum}");
+
+        float average = ((float)sum) / numbers.Count;
+        Console.WriteLine($"The average is: {average}");
+
         int max = numbers.Max();
-        Console.WriteLine("The largest number is: " + max);
-        
-        // Find smallest positive number
-        int smallestPositive = numbers.Where(n => n > 0).DefaultIfEmpty(0).Min();
-        Console.WriteLine("The smallest positive number is: " + smallestPositive);
-        
-        // Sort and display the list
+        Console.WriteLine($"The largest number is: {max}");
+
+        // Find the smallest positive number (the positive number closest to zero)
+        int smallestPositive = numbers.Where(n => n > 0).Min();
+        Console.WriteLine($"The smallest positive number is: {smallestPositive}");
+
+        // Sort the numbers in the list
         numbers.Sort();
         Console.WriteLine("The sorted list is:");
-        foreach (int num in numbers)
+        foreach (int number in numbers)
         {
-            Console.WriteLine(num);
+            Console.WriteLine(number);
         }
     }
 }
