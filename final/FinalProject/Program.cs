@@ -1,39 +1,43 @@
 using System;
+using System.Collections.Generic;
 
-public class BankAccount
+public class Comment
 {
-    private string accountNumber;
-    private decimal balance;
+    public string CommenterName { get; set; }
+    public string CommentText { get; set; }
+}
 
-    public BankAccount(string accountNumber)
+public class Video
+{
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public int LengthInSeconds { get; set; }
+    public List<Comment> Comments { get; set; }
+
+    public Video(string title, string author, int lengthInSeconds)
     {
-        this.accountNumber = accountNumber;
-        this.balance = 0;
+        Title = title;
+        Author = author;
+        LengthInSeconds = lengthInSeconds;
+        Comments = new List<Comment>();
     }
 
-    public void Deposit(decimal amount)
+    public int GetNumberOfComments()
     {
-        balance += amount;
-        Console.WriteLine($"Deposited {amount:C}. New balance: {balance:C}");
+        return Comments.Count;
     }
 
-    public void Withdraw(decimal amount)
+    public void DisplayDetails()
     {
-        if (balance >= amount)
+        Console.WriteLine($"Title: {Title}");
+        Console.WriteLine($"Author: {Author}");
+        Console.WriteLine($"Length: {LengthInSeconds} seconds");
+        Console.WriteLine($"Number of Comments: {GetNumberOfComments()}");
+        Console.WriteLine("Comments:");
+        foreach (var comment in Comments)
         {
-            balance -= amount;
-            Console.WriteLine($"Withdrawn {amount:C}. New balance: {balance:C}");
+            Console.WriteLine($"- {comment.CommenterName}: {comment.CommentText}");
         }
-        else
-        {
-            Console.WriteLine("Insufficient funds");
-        }
-    }
-
-    public decimal CheckBalance()
-    {
-        Console.WriteLine($"Current balance: {balance:C}");
-        return balance;
     }
 }
 
@@ -41,12 +45,19 @@ class Program
 {
     static void Main(string[] args)
     {
-        BankAccount account = new BankAccount("123456789");
-        account.Deposit(1000);
-        account.Withdraw(500);
-        account.CheckBalance();
+        var video1 = new Video("Introduction to OOP", "John Doe", 600);
+        video1.Comments.Add(new Comment { CommenterName = "Alice", CommentText = "Great video!" });
+        video1.Comments.Add(new Comment { CommenterName = "Bob", CommentText = "Very helpful." });
+
+        var video2 = new Video("Advanced C# Programming", "Jane Smith", 1200);
+        video2.Comments.Add(new Comment { CommenterName = "Charlie", CommentText = "I didn't understand the last part." });
+
+        var videos = new List<Video> { video1, video2 };
+
+        foreach (var video in videos)
+        {
+            video.DisplayDetails();
+            Console.WriteLine();
+        }
     }
 }
-
-
-
